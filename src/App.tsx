@@ -2,8 +2,9 @@ import { Header, Post, Sidebar } from './components';
 
 import styles from './app.module.css';
 import './global.css';
+import { PostModel } from './models';
 
-const posts = [
+const posts: PostModel[] = [
   {
     id: 1,
     publishedAt: new Date('2022-09-20 07:00:00'),
@@ -55,9 +56,7 @@ export function App() {
             posts.map(post => (
               <Post
                 key={post.id}
-                author={post.author}
-                content={post.content}
-                publishedAt={post.publishedAt}
+                post={post}
               />
             ))
           }

@@ -1,11 +1,17 @@
 import { Trash, ThumbsUp } from 'phosphor-react';
 import { useState } from 'react';
 import { Avatar } from '../';
+import { CommentModel } from '../../models';
 import { formatDate, getDateRelativeToNow } from '../../utils/date';
 
 import styles from './styles.module.css';
 
-export function Comment({ comment, onDeleteComment }) {
+interface CommentProps {
+  comment: CommentModel;
+  onDeleteComment: (comment: CommentModel) => void;
+}
+
+export function Comment({ comment, onDeleteComment }: CommentProps) {
   const { author, content, publishedAt, likes } = comment;
   const [likeCount, setLikeCount] = useState(likes);
 
@@ -23,9 +29,9 @@ export function Comment({ comment, onDeleteComment }) {
   return (
     <div className={styles.comment}>
       <Avatar
+        hasBorder={false}
         src={author.avatarUrl}
         alt={`Imagem de perfil de ${author.name}`}
-        hasBorder={false}
       />
       <div className={styles.commentBox}>
         <div className={styles.commentContent}>
@@ -36,7 +42,7 @@ export function Comment({ comment, onDeleteComment }) {
                 title={publishedDateFormatted}
                 dateTime={publishedAt.toISOString()}
               >
-                {publishedDateRelativeToNow} atrás
+                Publicado {publishedDateRelativeToNow} atrás
               </time>
             </div>
             <button

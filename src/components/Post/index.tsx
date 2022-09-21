@@ -1,12 +1,19 @@
-import { useState } from 'react';
+import { ChangeEvent, FormEvent, InvalidEvent, useState } from 'react';
 
 import { Avatar, Comment } from '../';
 
 import styles from './styles.module.css';
 import { formatDate, getDateRelativeToNow } from '../../utils/date';
+import { CommentModel, PostModel } from '../../models';
 
-export function Post({ author, content, publishedAt }) {
-  const [comments, setComments] = useState([
+interface PostProps {
+  post: PostModel;
+}
+
+export function Post({ post }: PostProps) {
+  const { author, content, publishedAt } = post;
+
+  const [comments, setComments] = useState<CommentModel[]>([
     {
       id: handleGenerateNewId(),
       author: {
@@ -16,12 +23,12 @@ export function Post({ author, content, publishedAt }) {
       },
       content: 'Post muito bacana, hein?!',
       publishedAt: new Date('2022-09-20 08:32:51'),
-      likes: 0
+      likes: Math.floor(Math.random() * 20)
     }
   ]);
   const [newCommentText, setNewCommentText] = useState('');
 
-  function handleCreateNewComment(event) {
+  function handleCreateNewComment(event: FormEvent) {
     event.preventDefault();
 
     setComments([ ...comments, {
@@ -32,19 +39,23 @@ export function Post({ author, content, publishedAt }) {
         role: 'Front-end Developer @Pagtel'
       },
       content: newCommentText,
-      publishedAt: new Date().toISOString(),
+      publishedAt: new Date(),
       likes: 0,
     }]);
 
     setNewCommentText('');
   }
 
-  function handleChangeNewComment(event) {
+  function handleChangeNewComment(event: ChangeEvent<HTMLTextAreaElement>) {
     event.target.setCustomValidity('')
     setNewCommentText(event.target.value);
   }
 
-  function deleteComment(commentToDelete) {
+  function handleNewCommentInvalid(event: InvalidEvent<HTMLTextAreaElement>) {
+    event.target.setCustomValidity('O comentário não pode ser vazio!')
+  }
+
+  function deleteComment(commentToDelete: CommentModel) {
     const commentsWithoutDeletedOne = comments.filter(comment =>
       comment.id !== commentToDelete.id
     );
@@ -54,10 +65,6 @@ export function Post({ author, content, publishedAt }) {
 
   function handleGenerateNewId() {
     return `${Date.now()}-${Math.floor(Math.random() * 1000)}`;
-  }
-
-  function handleNewCommentInvalid(event) {
-    event.target.setCustomValidity('O comentário não pode ser vazio!')
   }
 
   const publishedDateFormatted = formatDate(publishedAt);
@@ -90,8 +97,14 @@ export function Post({ author, content, publishedAt }) {
           {
             content.map((line, index) => {
               if(line.type === 'paragraph') return <p key={index}>{line.content}</p>
-              if(line.type === 'link') return <p key={index}><a href={line.content}>{line.content.split('://')[1]}</a></p>
+
+              if(line.type === 'link') return <p key={index}>
+                <a href={line.content.toString()}>{line.content.toString().split('://')[1]}</a>
+              </p>
+
               if(line.type === 'hashtags') return <p key={index}>{
+                typeof line.content === 'string' ? 
+                <a key={index} href={`/hashtag/${line.content}`}>#{line.content}</a> :
                 line.content.map((hashtag, index) =>
                   <a key={index} href={`/hashtag/${hashtag}`}>#{hashtag}</a>
                 )
