@@ -119,6 +119,12 @@
   background-color: var(--green-300);
 }
 
+.post .commentForm button[type="submit"]:disabled {
+  cursor: not-allowed;
+  background-color: var(--green-300);
+  opacity: .7;
+}
+
 .post .commentList {
   margin-top: 2rem;
 }

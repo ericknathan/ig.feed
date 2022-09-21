@@ -15,7 +15,7 @@ const posts = [
     content: [
       { type: 'paragraph', content: 'Fala galeraa 👋' },
       { type: 'paragraph', content: 'Acabei de subir mais um projeto no meu portifa. É um projeto que fiz no NLW Return, evento da Rocketseat. O nome do projeto é DoctorCare 🚀' },
-      { type: 'link', content: 'jane.design/doctorcare' },
+      { type: 'link', content: 'https://jane.design/doctorcare' },
       { type: 'hashtags', content: [
         'novoprojeto',
         'nlw',
@@ -35,7 +35,7 @@ const posts = [
       { type: 'paragraph', content: 'Fala pessoal 👋' },
       { type: 'paragraph', content: 'Finalmente finalizei meu novo site/portfólio. Foi um baita desafio criar todo o design e codar na unha, mas consegui 💪🏻' },
       { type: 'paragraph', content: 'Acesse e deixe seu feedback 👇' },
-      { type: 'link', content: 'devonlane.design' },
+      { type: 'link', content: 'https://devonlane.design' },
       { type: 'hashtags', content: [
         'uiux',
         'userexperience'
